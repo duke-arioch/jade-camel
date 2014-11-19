@@ -21,6 +21,7 @@ package org.sandcastle.camel.jade;
  * limitations under the License.
  * #L%
  */
+import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
@@ -71,7 +72,11 @@ public class JadeConsumer extends DefaultConsumer
 	public void start() throws Exception {
 		super.start();
 		try {
-			AgentController agent = endpoint.getAgent();
+			AgentController agent = endpoint
+					.getConfig()
+					.getContainer()
+					.getAgent(endpoint.getConfig().getAgentName(),
+							AID.ISLOCALNAME);
 			agent.putO2AObject(new ListenerRequest(true, this), false);
 		} catch (StaleProxyException ex) {
 			getExceptionHandler().handleException(ex);
@@ -82,7 +87,11 @@ public class JadeConsumer extends DefaultConsumer
 	public void shutdown() throws Exception {
 		super.start();
 		try {
-			AgentController agent = endpoint.getAgent();
+			AgentController agent = endpoint
+					.getConfig()
+					.getContainer()
+					.getAgent(endpoint.getConfig().getAgentName(),
+							AID.ISLOCALNAME);
 			agent.putO2AObject(new ListenerRequest(false, this), false);
 		} catch (StaleProxyException ex) {
 			getExceptionHandler().handleException(ex);

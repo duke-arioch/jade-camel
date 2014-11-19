@@ -21,8 +21,6 @@ package org.sandcastle.camel.jade;
  * limitations under the License.
  * #L%
  */
-import jade.core.AID;
-import jade.wrapper.AgentController;
 import jade.wrapper.ControllerException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -35,18 +33,15 @@ import org.slf4j.LoggerFactory;
 
 public class JadeEndpoint extends DefaultEndpoint {
 
-	private AgentController agent;
+	private JadeConfiguration config;
 	public static final Logger LOGGER = LoggerFactory
 			.getLogger(JadeEndpoint.class);
-
-	public JadeEndpoint() {
-	}
 
 	public JadeEndpoint(String uri, JadeComponent component)
 			throws ControllerException, URISyntaxException {
 		super(uri, component);
-		URI u = new URI(uri);
-		agent = component.getContainer().getAgent(u.getHost(), AID.ISLOCALNAME);
+		config = new JadeConfiguration(component.getContainer(),
+				URI.create(uri));
 	}
 
 	@Override
@@ -64,12 +59,12 @@ public class JadeEndpoint extends DefaultEndpoint {
 		return true;
 	}
 
-	public AgentController getAgent() {
-		return agent;
+	public JadeConfiguration getConfig() {
+		return config;
 	}
 
-	public void setAgent(AgentController agent) {
-		this.agent = agent;
+	public void setConfig(JadeConfiguration config) {
+		this.config = config;
 	}
 
 }

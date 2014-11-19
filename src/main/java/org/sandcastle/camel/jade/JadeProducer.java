@@ -21,8 +21,12 @@ package org.sandcastle.camel.jade;
  * limitations under the License.
  * #L%
  */
+import jade.core.AID;
+import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
+import java.util.Map;
 import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.apache.camel.impl.DefaultProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,13 +43,52 @@ public class JadeProducer extends DefaultProducer {
 	}
 
 	@Override
-	public void process(Exchange exchange) throws Exception {
-		AgentController agent = endpoint.getAgent();
-		if (agent != null) {
-			agent.putO2AObject(exchange, false);
-		} else {
-			LOGGER.error("FFFFFDSSSSSSSSSSSSSSS");
-			throw new NullPointerException("Target agent cannot be null");
-		}
-	}
+    public void process(Exchange exchange) throws Exception {
+        JadeConfiguration config = endpoint.getConfig();
+        Message inMessage = exchange.getIn();
+        Map<String, Object> headers = inMessage.getHeaders();
+
+        final int performative;
+        if (headers.containsKey("jade.PERFORMATIVE")) {
+            performative = ACLMessage.getInteger(inMessage.getHeader("jade.PERFORMATIVE", String.class));
+        } else {
+            performative = config.getPerformative() == null ? ACLMessage.REQUEST : ACLMessage.getInteger(config.getPerformative());
+        }
+        ACLMessage aclMessage = new ACLMessage(performative == ACLMessage.UNKNOWN ? ACLMessage.REQUEST : performative);
+        aclMessage.setContent(inMessage.getBody(String.class));
+
+        final String agentName;
+        if (headers.containsKey("jade.AGENT_NAME")) {
+            agentName = inMessage.getHeader("jade.AGENT_NAME", String.class);
+        } else {
+            agentName = config.getAgentName();
+        }
+
+        final String defaultForward;
+        if (headers.containsKey("jade.DEFAULT_FORWARD")) {
+            defaultForward = inMessage.getHeader("jade.DEFAULT_FORWARD", String.class);
+        } else {
+            defaultForward = config.getDefaultForward() == null ? agentName : config.getDefaultForward();
+        }
+        aclMessage.addReceiver(new AID(defaultForward, AID.ISLOCALNAME));
+
+        final String replyTo;
+        if (headers.containsKey("jade.REPLY_TO")) {
+            replyTo = inMessage.getHeader("jade.REPLY_TO", String.class);
+        } else {
+            replyTo = config.getReplyTo() == null ? agentName : config.getReplyTo();
+        }
+        aclMessage.addReplyTo(new AID(replyTo, AID.ISLOCALNAME));
+
+        inMessage.getHeaders().entrySet().stream().forEach((entry) -> {
+            aclMessage.addUserDefinedParameter(entry.getKey(), (String) entry.getValue());
+        });
+
+        AgentController agent = config.getContainer().getAgent(agentName, AID.ISLOCALNAME);
+        if (agent != null) {
+            agent.putO2AObject(aclMessage, false);
+        } else {
+            throw new NullPointerException("Target agent cannot be null");
+        }
+    }
 }
