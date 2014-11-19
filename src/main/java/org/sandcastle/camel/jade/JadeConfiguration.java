@@ -21,7 +21,6 @@ package org.sandcastle.camel.jade;
  * limitations under the License.
  * #L%
  */
-
 import jade.wrapper.AgentContainer;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -34,6 +33,11 @@ public class JadeConfiguration {
 	public static final String REPLY_TO = "replyTo";
 	public static final String PERFORMATIVE = "performative";
 	public static final String JADE_PROTOCOL = "jade";
+
+	public static final String JADE_REPLY_TO = "jade.REPLY_TO";
+	public static final String JADE_DEFAULT_FORWARD = "jade.DEFAULT_FORWARD";
+	public static final String JADE_AGENT_NAME = "jade.AGENT_NAME";
+	public static final String JADE_PERFORMATIVE = "jade.PERFORMATIVE";
 	private AgentContainer container;
 	private String agentName;
 	private String defaultForward;

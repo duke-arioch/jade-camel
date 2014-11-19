@@ -49,8 +49,8 @@ public class JadeProducer extends DefaultProducer {
         Map<String, Object> headers = inMessage.getHeaders();
 
         final int performative;
-        if (headers.containsKey("jade.PERFORMATIVE")) {
-            performative = ACLMessage.getInteger(inMessage.getHeader("jade.PERFORMATIVE", String.class));
+        if (headers.containsKey(JadeConfiguration.JADE_PERFORMATIVE)) {
+            performative = ACLMessage.getInteger(inMessage.getHeader(JadeConfiguration.JADE_PERFORMATIVE, String.class));
         } else {
             performative = config.getPerformative() == null ? ACLMessage.REQUEST : ACLMessage.getInteger(config.getPerformative());
         }
@@ -58,23 +58,23 @@ public class JadeProducer extends DefaultProducer {
         aclMessage.setContent(inMessage.getBody(String.class));
 
         final String agentName;
-        if (headers.containsKey("jade.AGENT_NAME")) {
-            agentName = inMessage.getHeader("jade.AGENT_NAME", String.class);
+        if (headers.containsKey(JadeConfiguration.JADE_AGENT_NAME)) {
+            agentName = inMessage.getHeader(JadeConfiguration.JADE_AGENT_NAME, String.class);
         } else {
             agentName = config.getAgentName();
         }
 
         final String defaultForward;
-        if (headers.containsKey("jade.DEFAULT_FORWARD")) {
-            defaultForward = inMessage.getHeader("jade.DEFAULT_FORWARD", String.class);
+        if (headers.containsKey(JadeConfiguration.JADE_DEFAULT_FORWARD)) {
+            defaultForward = inMessage.getHeader(JadeConfiguration.JADE_DEFAULT_FORWARD, String.class);
         } else {
             defaultForward = config.getDefaultForward() == null ? agentName : config.getDefaultForward();
         }
         aclMessage.addReceiver(new AID(defaultForward, AID.ISLOCALNAME));
 
         final String replyTo;
-        if (headers.containsKey("jade.REPLY_TO")) {
-            replyTo = inMessage.getHeader("jade.REPLY_TO", String.class);
+        if (headers.containsKey(JadeConfiguration.JADE_REPLY_TO)) {
+            replyTo = inMessage.getHeader(JadeConfiguration.JADE_REPLY_TO, String.class);
         } else {
             replyTo = config.getReplyTo() == null ? agentName : config.getReplyTo();
         }

@@ -42,7 +42,8 @@ public class JadeComponentTest extends CamelTestSupport {
 	public void testJade() throws Exception {
 		MockEndpoint mock = getMockEndpoint("mock:result");
 		mock.expectedMinimumMessageCount(1);
-		producerTemplate.sendBodyAndHeader("the body", "jade.REPLY_TO", "foo");
+		producerTemplate.sendBodyAndHeader("the body",
+				JadeConfiguration.JADE_REPLY_TO, "foo");
 		assertMockEndpointsSatisfied();
 		Exchange toCheck = mock.getExchanges().get(0);
 		assertThat(toCheck.getIn().getBody(String.class),
