@@ -1,4 +1,4 @@
-package org.sandcastle.camel.jade;
+package org.sandcast.camel.jade;
 
 /*
  * #%L
@@ -22,13 +22,22 @@ package org.sandcastle.camel.jade;
  * #L%
  */
 
-import java.util.Set;
+public class ListenerRequest {
 
-public interface AgentMessageSource {
+	private final boolean register;
+	private final AgentMessageListener listener;
 
-	void addListener(AgentMessageListener listener);
+	public ListenerRequest(boolean register, AgentMessageListener listener) {
+		this.register = register;
+		this.listener = listener;
+	}
 
-	void removeListener(AgentMessageListener listener);
+	public AgentMessageListener getListener() {
+		return listener;
+	}
 
-	Set<AgentMessageListener> getListeners();
+	public boolean shouldRegister() {
+		return register;
+	}
+
 }

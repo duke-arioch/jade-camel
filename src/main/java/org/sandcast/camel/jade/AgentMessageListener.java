@@ -1,4 +1,4 @@
-package org.sandcastle.camel.jade;
+package org.sandcast.camel.jade;
 
 /*
  * #%L
@@ -22,22 +22,9 @@ package org.sandcastle.camel.jade;
  * #L%
  */
 
-public class ListenerRequest {
+import jade.lang.acl.ACLMessage;
 
-	private final boolean register;
-	private final AgentMessageListener listener;
+public interface AgentMessageListener {
 
-	public ListenerRequest(boolean register, AgentMessageListener listener) {
-		this.register = register;
-		this.listener = listener;
-	}
-
-	public AgentMessageListener getListener() {
-		return listener;
-	}
-
-	public boolean shouldRegister() {
-		return register;
-	}
-
+	void handle(ACLMessage message);
 }

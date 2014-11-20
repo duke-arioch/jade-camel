@@ -1,4 +1,4 @@
-package org.sandcastle.camel.jade;
+package org.sandcast.camel.jade;
 
 /*
  * #%L
@@ -21,30 +21,14 @@ package org.sandcastle.camel.jade;
  * limitations under the License.
  * #L%
  */
-import jade.wrapper.AgentContainer;
-import java.util.Map;
 
-import org.apache.camel.Endpoint;
-import org.apache.camel.impl.DefaultComponent;
+import java.util.Set;
 
-public class JadeComponent extends DefaultComponent {
+public interface AgentMessageSource {
 
-	private AgentContainer container;
+	void addListener(AgentMessageListener listener);
 
-	@Override
-	protected Endpoint createEndpoint(String uri, String remaining,
-			Map<String, Object> parameters) throws Exception {
-		JadeEndpoint endpoint = new JadeEndpoint(uri, this);
-		setProperties(endpoint, parameters);
-		return endpoint;
-	}
+	void removeListener(AgentMessageListener listener);
 
-	public AgentContainer getContainer() {
-		return container;
-	}
-
-	public void setContainer(AgentContainer container) {
-		this.container = container;
-	}
-
+	Set<AgentMessageListener> getListeners();
 }

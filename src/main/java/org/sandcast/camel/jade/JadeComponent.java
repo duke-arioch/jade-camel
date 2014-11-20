@@ -1,4 +1,4 @@
-package org.sandcastle.camel.jade;
+package org.sandcast.camel.jade;
 
 /*
  * #%L
@@ -21,27 +21,30 @@ package org.sandcastle.camel.jade;
  * limitations under the License.
  * #L%
  */
-import jade.core.Agent;
-import jade.core.behaviours.CyclicBehaviour;
-import jade.lang.acl.ACLMessage;
+import jade.wrapper.AgentContainer;
+import java.util.Map;
 
-public class CyclicEventBroadcastBehaviourImpl extends CyclicBehaviour {
+import org.apache.camel.Endpoint;
+import org.apache.camel.impl.DefaultComponent;
 
-	static final long serialVersionUID = 1L;
+public class JadeComponent extends DefaultComponent {
 
-	public CyclicEventBroadcastBehaviourImpl(Agent a) {
-		super(a);
-	}
+	private AgentContainer container;
 
 	@Override
-    public void action() {
-        final ACLMessage msg = myAgent.receive();
-        if ((msg != null)) {
-            ((AgentMessageSource) myAgent).getListeners().stream().forEach((listener) -> {
-                listener.handle(msg);
-            });
-        } else {
-            block();
-        }
-    }
+	protected Endpoint createEndpoint(String uri, String remaining,
+			Map<String, Object> parameters) throws Exception {
+		JadeEndpoint endpoint = new JadeEndpoint(uri, this);
+		setProperties(endpoint, parameters);
+		return endpoint;
+	}
+
+	public AgentContainer getContainer() {
+		return container;
+	}
+
+	public void setContainer(AgentContainer container) {
+		this.container = container;
+	}
+
 }

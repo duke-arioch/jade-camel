@@ -1,4 +1,4 @@
-package org.sandcastle.camel.jade;
+package org.sandcast.camel.jade;
 
 /*
  * #%L

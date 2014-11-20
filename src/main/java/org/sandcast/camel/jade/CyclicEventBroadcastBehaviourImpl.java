@@ -1,4 +1,4 @@
-package org.sandcastle.camel.jade;
+package org.sandcast.camel.jade;
 
 /*
  * #%L
@@ -21,10 +21,27 @@ package org.sandcastle.camel.jade;
  * limitations under the License.
  * #L%
  */
-
+import jade.core.Agent;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 
-public interface AgentMessageListener {
+public class CyclicEventBroadcastBehaviourImpl extends CyclicBehaviour {
 
-	void handle(ACLMessage message);
+	static final long serialVersionUID = 1L;
+
+	public CyclicEventBroadcastBehaviourImpl(Agent a) {
+		super(a);
+	}
+
+	@Override
+    public void action() {
+        final ACLMessage msg = myAgent.receive();
+        if ((msg != null)) {
+            ((AgentMessageSource) myAgent).getListeners().stream().forEach((listener) -> {
+                listener.handle(msg);
+            });
+        } else {
+            block();
+        }
+    }
 }
