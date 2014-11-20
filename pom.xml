@@ -14,6 +14,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  <scm>
+      <connection>scm:git://git@github.com:msandoz/jade-camel.git</connection>
+      <developerConnection>scm:git:git@github.com:msandoz/jade-camel.git</developerConnection>
+      
+  </scm>
   <dependencies>
     <dependency>
       <groupId>jade</groupId>
