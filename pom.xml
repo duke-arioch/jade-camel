@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.sandcast</groupId>
   <artifactId>jade-camel</artifactId>
-  <version>1.4-SNAPSHOT</version>
+  <version>1.5-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Jade Camel Component</name>
   <url>https://github.com/msandoz/jade-camel</url>
@@ -19,6 +19,7 @@
   <scm>
     <connection>scm:git://git@github.com:sandcast/jade-camel.git</connection>
     <developerConnection>scm:git:git@github.com:sandcast/jade-camel.git</developerConnection>
+    <tag>HEAD</tag>
   </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
