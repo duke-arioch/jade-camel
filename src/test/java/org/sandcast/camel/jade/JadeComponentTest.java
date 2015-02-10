@@ -21,9 +21,6 @@ package org.sandcast.camel.jade;
  * limitations under the License.
  * #L%
  */
-import org.sandcast.camel.jade.JadeComponent;
-import org.sandcast.camel.jade.EventGatewayAgent;
-import org.sandcast.camel.jade.JadeConfiguration;
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentContainer;
 import org.apache.camel.Exchange;
